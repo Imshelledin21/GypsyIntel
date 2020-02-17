@@ -3,7 +3,7 @@
 @using GypsyIntel.Calculators.DataModels;
 @using GypsyIntel.Calculators;
 
-@inject DraftCalculator draftCalculator;
+@inject GypsyIntel.Calculators.DraftCalculator _draftCalculator;
 
 
 <h1>Draft Calculator</h1>
@@ -22,7 +22,7 @@
 
         <label>
             Military Population:
-            <InputNumber @bind-Value="soldiersPerTick.MilitaryPopulation" />%
+            <InputNumber @bind-Value="soldiersPerTick.MilitaryPopulation" />
         </label>
         <label>
             Current Peasants:
@@ -68,12 +68,12 @@
 
         <label>
             Affluent Ritual Effectiveness (0 = Affluent Ritual Not Activated):
-            <InputNumber @bind-Value="soldiersPerTick.Affluent" />
+            <InputNumber @bind-Value="soldiersPerTick.Affluent" />%
         </label>
 
         <label>
             Heroism Science Bonus Percent (0 = No Science in Heroism):
-            <InputNumber @bind-Value="soldiersPerTick.Science" />
+            <InputNumber @bind-Value="soldiersPerTick.Science" />%
         </label>
 
         <button type="submit">Calculate Draft</button>
@@ -87,14 +87,14 @@ catch (Exception ex)
 <p />
 <hr />
 
-<h3>Ticks to Draft:</h3> @draftCalcResults.Count
+<h3>Ticks to Draft: @draftCalcResults.Count</h3>
 <table>
     <tr>
-        <th>Tick</th>
-        <th>Soldiers Drafted</th>
-        <th>Military Population</th>
-        <th>Peasant Population</th>
-        <th>Drafted Percent</th>
+        <th width="50px" align="center">Tick</th>
+        <th width="100px" align="center">Soldiers Drafted</th>
+        <th width="100px" align="center">Military Population</th>
+        <th width="100px" align="center">Peasant Population</th>
+        <th width="100px" align="center">Drafted Percent</th>
     </tr>
     @foreach (var result in draftCalcResults)
     {
@@ -103,7 +103,7 @@ catch (Exception ex)
             <td>@result.SoldiersDrafted</td>
             <td>@result.MilitaryPopulation</td>
             <td>@result.PeasantPopulation</td>
-            <td>@result.DraftedPercent</td>
+            <td>@result.DraftedPercent%</td>
         </tr>
     }
 </table>
@@ -117,8 +117,6 @@ catch (Exception ex)
 
     private async Task Calculate()
     {
-        draftCalcResults = await draftCalculator.CalculateDraft(soldiersPerTick);
+        draftCalcResults = await _draftCalculator.CalculateDraft(soldiersPerTick);
     }
-
-
 }

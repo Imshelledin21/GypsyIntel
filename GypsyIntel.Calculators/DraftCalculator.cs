@@ -16,7 +16,7 @@ namespace GypsyIntel.Calculators
                 double currentDraftPercent = Convert.ToDouble(soldiersPerTick.MilitaryPopulation) / Convert.ToDouble(soldiersPerTick.MaxPopulation);
                 int maxPopulation = soldiersPerTick.MaxPopulation;
                 double targetDraft = soldiersPerTick.TargetDraft / 100;
-
+                double affluentPercent = soldiersPerTick.Affluent;
                 int peasants = soldiersPerTick.Peasants;
                 int militaryPopulation = soldiersPerTick.MilitaryPopulation;
 
@@ -30,7 +30,7 @@ namespace GypsyIntel.Calculators
                             (soldiersPerTick.PersonalityBonus == "War Hero" ? 1.2 : 1) *
                             (soldiersPerTick.Patriotism ? 1.3 : 1) *
                             (soldiersPerTick.Dragon ? .8 : 1) *
-                            (soldiersPerTick.Affluent != 0 ? 1.2 * (soldiersPerTick.Affluent / 100) : 1) *
+                            (soldiersPerTick.Affluent != 0 ? 1.2 * ((affluentPercent - (Convert.ToDouble(tick) * .25)) / 100) : 1) *
                             (soldiersPerTick.Science != 0 ? (1 + (soldiersPerTick.Science / 100)) : 1)
                         ) / 100
                     ;
@@ -44,7 +44,7 @@ namespace GypsyIntel.Calculators
                         Tick = tick,
                         MilitaryPopulation = militaryPopulation,
                         PeasantPopulation = peasants,
-                        DraftedPercent = currentDraftPercent,
+                        DraftedPercent = Math.Round(currentDraftPercent * 100, 2),
                         SoldiersDrafted = soldiersDrafted
                     });
 
