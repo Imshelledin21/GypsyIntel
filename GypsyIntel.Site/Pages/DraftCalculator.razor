@@ -9,75 +9,106 @@
 <h1>Draft Calculator</h1>
 @try
 {
+<div style="width:500px">
     <EditForm Model="@soldiersPerTick" OnSubmit="Calculate">
-        <label>
-            Max Population:
-            <InputNumber @bind-Value="soldiersPerTick.MaxPopulation" />
-        </label>
+        <table>
+            <tr>
+                <td>
+                    <label>
+                        Max Population:
+                        <InputNumber @bind-Value="soldiersPerTick.MaxPopulation" style="width:75px" />
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        Target Draft Percent:
+                        <InputNumber @bind-Value="soldiersPerTick.TargetDraft" style="width:50px" />%
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        Military Population:
+                        <InputNumber @bind-Value="soldiersPerTick.MilitaryPopulation" style="width:75px" />
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        Current Peasants:
+                        <InputNumber @bind-Value="soldiersPerTick.Peasants" style="width:75px" />
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        Draft Speed:
+                        <InputSelect @bind-Value="soldiersPerTick.DraftSpeed">
+                            <option value="">Select Draft Speed...</option>
+                            <option value=".003">Reservist</option>
+                            <option value=".006">Normal</option>
+                            <option value=".01">Aggressive</option>
+                            <option value=".015">Emergency</option>
+                        </InputSelect>
+                    </label>
+                </td>
+            </tr>
+            <tr>
 
-        <label>
-            Target Draft Percent:
-            <InputNumber @bind-Value="soldiersPerTick.TargetDraft" />%
-        </label>
+                <td>
+                    <label>
+                        Race:
+                        <InputSelect @bind-Value="soldiersPerTick.RaceBonus">
+                            <option value="">Select Race...</option>
+                            <option value="Orc">Orc</option>
+                            <option value="Other">Other</option>
+                        </InputSelect>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        Personality:
+                        <InputSelect @bind-Value="soldiersPerTick.PersonalityBonus">
+                            <option value="">Select Personality...</option>
+                            <option value="War Hero"> War Hero</option>
+                            <option value="Other">Other</option>
+                        </InputSelect>
+                    </label>
+                </td>
 
-        <label>
-            Military Population:
-            <InputNumber @bind-Value="soldiersPerTick.MilitaryPopulation" />
-        </label>
-        <label>
-            Current Peasants:
-            <InputNumber @bind-Value="soldiersPerTick.Peasants" />
-        </label>
-        <label>
-            Draft Speed:
-            <InputSelect @bind-Value="soldiersPerTick.DraftSpeed">
-                <option value="">Select Draft Speed...</option>
-                <option value=".003">Reservist</option>
-                <option value=".006">Normal</option>
-                <option value=".01">Aggressive</option>
-                <option value=".015">Emergency</option>
-            </InputSelect>
-        </label>
-        <label>
-            Race:
-            <InputSelect @bind-Value="soldiersPerTick.RaceBonus">
-                <option value="">Select Race...</option>
-                <option value="Orc">Orc</option>
-                <option value="Other">Other</option>
-            </InputSelect>
-        </label>
+                <td>
+                    <label>
+                        Patriotism:
+                        <InputCheckbox @bind-Value="soldiersPerTick.Patriotism" />
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        Dragon:
+                        <InputCheckbox @bind-Value="soldiersPerTick.Dragon" />
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label>
+                        Affluent Ritual Effectiveness (0 = Affluent Ritual Not Activated):
+                        <InputNumber @bind-Value="soldiersPerTick.Affluent" />%
+                    </label>
+                </td>
+                <td colspan="2">
+                    <label>
+                        Heroism Science Bonus Percent (0 = No Science in Heroism):
+                        <InputNumber @bind-Value="soldiersPerTick.Science" />%
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <button type="submit">Calculate Draft</button>
+                </td>
+            </tr>
+        </table>
 
-        <label>
-            Personality:
-            <InputSelect @bind-Value="soldiersPerTick.PersonalityBonus">
-                <option value="">Select Personality...</option>
-                <option value="War Hero"> War Hero</option>
-                <option value="Other">Other</option>
-            </InputSelect>
-        </label>
-
-        <label>
-            Patriotism:
-            <InputCheckbox @bind-Value="soldiersPerTick.Patriotism" />
-        </label>
-
-        <label>
-            Dragon:
-            <InputCheckbox @bind-Value="soldiersPerTick.Dragon" />
-        </label>
-
-        <label>
-            Affluent Ritual Effectiveness (0 = Affluent Ritual Not Activated):
-            <InputNumber @bind-Value="soldiersPerTick.Affluent" />%
-        </label>
-
-        <label>
-            Heroism Science Bonus Percent (0 = No Science in Heroism):
-            <InputNumber @bind-Value="soldiersPerTick.Science" />%
-        </label>
-
-        <button type="submit">Calculate Draft</button>
     </EditForm>
+</div>
 }
 catch (Exception ex)
 {

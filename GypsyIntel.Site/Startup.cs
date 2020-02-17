@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using GypsyIntel.Site.Data;
-using GypsyIntel.Calculators;
+using GypsyIntel.Site.Pages;
 
 namespace GypsyIntel.Site
 {
@@ -29,7 +28,6 @@ namespace GypsyIntel.Site
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<DraftCalculator>();
         }
 
