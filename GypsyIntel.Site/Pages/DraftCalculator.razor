@@ -1,0 +1,124 @@
+﻿@page "/draftCalculator"
+
+@using GypsyIntel.Calculators.DataModels;
+@using GypsyIntel.Calculators;
+
+@inject DraftCalculator draftCalculator;
+
+
+<h1>Draft Calculator</h1>
+@try
+{
+    <EditForm Model="@soldiersPerTick" OnSubmit="Calculate">
+        <label>
+            Max Population:
+            <InputNumber @bind-Value="soldiersPerTick.MaxPopulation" />
+        </label>
+
+        <label>
+            Target Draft Percent:
+            <InputNumber @bind-Value="soldiersPerTick.TargetDraft" />%
+        </label>
+
+        <label>
+            Military Population:
+            <InputNumber @bind-Value="soldiersPerTick.MilitaryPopulation" />%
+        </label>
+        <label>
+            Current Peasants:
+            <InputNumber @bind-Value="soldiersPerTick.Peasants" />
+        </label>
+        <label>
+            Draft Speed:
+            <InputSelect @bind-Value="soldiersPerTick.DraftSpeed">
+                <option value="">Select Draft Speed...</option>
+                <option value=".003">Reservist</option>
+                <option value=".006">Normal</option>
+                <option value=".01">Aggressive</option>
+                <option value=".015">Emergency</option>
+            </InputSelect>
+        </label>
+        <label>
+            Race:
+            <InputSelect @bind-Value="soldiersPerTick.RaceBonus">
+                <option value="">Select Race...</option>
+                <option value="Orc">Orc</option>
+                <option value="Other">Other</option>
+            </InputSelect>
+        </label>
+
+        <label>
+            Personality:
+            <InputSelect @bind-Value="soldiersPerTick.PersonalityBonus">
+                <option value="">Select Personality...</option>
+                <option value="War Hero"> War Hero</option>
+                <option value="Other">Other</option>
+            </InputSelect>
+        </label>
+
+        <label>
+            Patriotism:
+            <InputCheckbox @bind-Value="soldiersPerTick.Patriotism" />
+        </label>
+
+        <label>
+            Dragon:
+            <InputCheckbox @bind-Value="soldiersPerTick.Dragon" />
+        </label>
+
+        <label>
+            Affluent Ritual Effectiveness (0 = Affluent Ritual Not Activated):
+            <InputNumber @bind-Value="soldiersPerTick.Affluent" />
+        </label>
+
+        <label>
+            Heroism Science Bonus Percent (0 = No Science in Heroism):
+            <InputNumber @bind-Value="soldiersPerTick.Science" />
+        </label>
+
+        <button type="submit">Calculate Draft</button>
+    </EditForm>
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+}
+
+<p />
+<hr />
+
+<h3>Ticks to Draft:</h3> @draftCalcResults.Count
+<table>
+    <tr>
+        <th>Tick</th>
+        <th>Soldiers Drafted</th>
+        <th>Military Population</th>
+        <th>Peasant Population</th>
+        <th>Drafted Percent</th>
+    </tr>
+    @foreach (var result in draftCalcResults)
+    {
+        <tr>
+            <td>@result.Tick</td>
+            <td>@result.SoldiersDrafted</td>
+            <td>@result.MilitaryPopulation</td>
+            <td>@result.PeasantPopulation</td>
+            <td>@result.DraftedPercent</td>
+        </tr>
+    }
+</table>
+
+
+
+@code {
+    private SoldiersPerTick soldiersPerTick = new SoldiersPerTick();
+    private List<DraftCalcTickResult> draftCalcResults = new List<DraftCalcTickResult>(){ new DraftCalcTickResult(){Tick=0,
+        DraftedPercent=0, MilitaryPopulation=0, PeasantPopulation=0,SoldiersDrafted=0} };
+
+    private async Task Calculate()
+    {
+        draftCalcResults = await draftCalculator.CalculateDraft(soldiersPerTick);
+    }
+
+
+}
