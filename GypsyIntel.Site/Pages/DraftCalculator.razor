@@ -178,6 +178,7 @@ catch (Exception ex)
 
     private async Task Calculate()
     {
+        draftBreakdowns = new Dictionary<string, List<DraftCalcTickResult>>();
         foreach (var calc in Calculations)
         {
             switch (calc)
