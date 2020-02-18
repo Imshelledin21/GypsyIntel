@@ -16,14 +16,15 @@ namespace GypsyIntel.Calculators
                 double currentDraftPercent = Convert.ToDouble(soldiersPerTick.MilitaryPopulation) / Convert.ToDouble(soldiersPerTick.MaxPopulation);
                 int maxPopulation = soldiersPerTick.MaxPopulation;
                 double targetDraft = soldiersPerTick.TargetDraft / 100;
+                int targetMilitaryPopulation = Convert.ToInt32(soldiersPerTick.MaxPopulation * soldiersPerTick.TargetDraft / 100);
                 double affluentPercent = soldiersPerTick.Affluent;
                 int peasants = soldiersPerTick.Peasants;
                 int militaryPopulation = soldiersPerTick.MilitaryPopulation;
 
                 int tick = 1;
-                while (currentDraftPercent <= targetDraft)
+                while (currentDraftPercent < targetDraft)
                 {
-                    var soldiersDrafted =
+                    int soldiersDrafted =
                         Convert.ToInt32(
                             peasants *
                             (double.Parse(soldiersPerTick.DraftSpeed) * 100) *
@@ -37,6 +38,13 @@ namespace GypsyIntel.Calculators
 
                     peasants = peasants - soldiersDrafted;
                     militaryPopulation = militaryPopulation + soldiersDrafted;
+
+                    if (militaryPopulation > targetMilitaryPopulation)
+                    {
+                        soldiersDrafted = militaryPopulation - targetMilitaryPopulation;
+                        militaryPopulation = targetMilitaryPopulation;
+                    }
+                    
                     currentDraftPercent = Convert.ToDouble(militaryPopulation) / Convert.ToDouble(maxPopulation);
 
                     calcResult.Add(new DraftCalcTickResult

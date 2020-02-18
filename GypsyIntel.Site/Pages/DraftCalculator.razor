@@ -9,106 +9,79 @@
 <h1>Draft Calculator</h1>
 @try
 {
-<div style="width:500px">
-    <EditForm Model="@soldiersPerTick" OnSubmit="Calculate">
-        <table>
-            <tr>
-                <td>
-                    <label>
-                        Max Population:
-                        <InputNumber @bind-Value="soldiersPerTick.MaxPopulation" style="width:75px" />
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        Target Draft Percent:
-                        <InputNumber @bind-Value="soldiersPerTick.TargetDraft" style="width:50px" />%
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        Military Population:
-                        <InputNumber @bind-Value="soldiersPerTick.MilitaryPopulation" style="width:75px" />
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        Current Peasants:
-                        <InputNumber @bind-Value="soldiersPerTick.Peasants" style="width:75px" />
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        Draft Speed:
-                        <InputSelect @bind-Value="soldiersPerTick.DraftSpeed">
-                            <option value="">Select Draft Speed...</option>
-                            <option value=".003">Reservist</option>
-                            <option value=".006">Normal</option>
-                            <option value=".01">Aggressive</option>
-                            <option value=".015">Emergency</option>
-                        </InputSelect>
-                    </label>
-                </td>
-            </tr>
-            <tr>
+    <div class="col-lg-12">
+        <EditForm Model="@soldiersPerTick" OnSubmit="Calculate">
+            <table>
+                <tr>
+                    <td>
+                        <label>
+                            Max Population:
+                            <InputNumber @bind-Value="soldiersPerTick.MaxPopulation" style="width:75px" />
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            Target Draft Percent:
+                            <InputNumber @bind-Value="soldiersPerTick.TargetDraft" style="width:50px" />%
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            Military Population:
+                            <InputNumber @bind-Value="soldiersPerTick.MilitaryPopulation" style="width:75px" />
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            Current Peasants:
+                            <InputNumber @bind-Value="soldiersPerTick.Peasants" style="width:75px" />
+                        </label>
+                    </td>
+                </tr>
+                <tr>
 
-                <td>
-                    <label>
-                        Race:
-                        <InputSelect @bind-Value="soldiersPerTick.RaceBonus">
-                            <option value="">Select Race...</option>
-                            <option value="Orc">Orc</option>
-                            <option value="Other">Other</option>
-                        </InputSelect>
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        Personality:
-                        <InputSelect @bind-Value="soldiersPerTick.PersonalityBonus">
-                            <option value="">Select Personality...</option>
-                            <option value="War Hero"> War Hero</option>
-                            <option value="Other">Other</option>
-                        </InputSelect>
-                    </label>
-                </td>
+                    <td>
+                        <label>
+                            Race:
+                            <InputSelect @bind-Value="soldiersPerTick.RaceBonus">
+                                <option value="Other">Other</option>
+                                <option value="Orc">Orc</option>
+                            </InputSelect>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            Personality:
+                            <InputSelect @bind-Value="soldiersPerTick.PersonalityBonus">
+                                <option value="Other">Other</option>
+                                <option value="War Hero"> War Hero</option>
+                            </InputSelect>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label>
+                            Affluent Ritual Effectiveness:
+                            <InputNumber @bind-Value="soldiersPerTick.Affluent" />%
+                        </label>
+                    </td>
+                    <td colspan="2">
+                        <label>
+                            Heroism Science Bonus Percent:
+                            <InputNumber @bind-Value="soldiersPerTick.Science" />%
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <button type="submit">Calculate Draft</button>
+                    </td>
+                </tr>
+            </table>
 
-                <td>
-                    <label>
-                        Patriotism:
-                        <InputCheckbox @bind-Value="soldiersPerTick.Patriotism" />
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        Dragon:
-                        <InputCheckbox @bind-Value="soldiersPerTick.Dragon" />
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <label>
-                        Affluent Ritual Effectiveness (0 = Affluent Ritual Not Activated):
-                        <InputNumber @bind-Value="soldiersPerTick.Affluent" />%
-                    </label>
-                </td>
-                <td colspan="2">
-                    <label>
-                        Heroism Science Bonus Percent (0 = No Science in Heroism):
-                        <InputNumber @bind-Value="soldiersPerTick.Science" />%
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <button type="submit">Calculate Draft</button>
-                </td>
-            </tr>
-        </table>
-
-    </EditForm>
-</div>
+        </EditForm>
+    </div>
 }
 catch (Exception ex)
 {
@@ -117,27 +90,70 @@ catch (Exception ex)
 
 <p />
 <hr />
+@if (draftBreakdowns.Count > 0)
+{
+    <div class="col-lg-12">
+        <table border="1">
+            <tr>
+                <td width="4%"></td>
+                <td text-align="center" width="16%">Emergency + Patriotism</td>
+                <td text-align="center" width="16%">Emergency</td>
+                <td text-align="center" width="16%">Aggressive + Patriotism</td>
+                <td text-align="center" width="16%">Aggressive</td>
+                <td text-align="center" width="16%">Normal + Patriotism</td>
+                <td text-align="center" width="16%">Normal</td>
+            </tr>
+            <tr>
+                <td align="right"><strong>Ticks:</strong></td>
+                <td align="center">@draftBreakdowns["Emergency + Patriotism"].Count()</td>
+                <td align="center">@draftBreakdowns["Emergency"].Count()</td>
+                <td align="center">@draftBreakdowns["Aggressive + Patriotism"].Count()</td>
+                <td align="center">@draftBreakdowns["Aggressive"].Count()</td>
+                <td align="center">@draftBreakdowns["Normal + Patriotism"].Count()</td>
+                <td align="center">@draftBreakdowns["Normal"].Count()</td>
+            </tr>
+        </table>
 
-<h3>Ticks to Draft: @draftCalcResults.Count</h3>
-<table>
-    <tr>
-        <th width="50px" align="center">Tick</th>
-        <th width="100px" align="center">Soldiers Drafted</th>
-        <th width="100px" align="center">Military Population</th>
-        <th width="100px" align="center">Peasant Population</th>
-        <th width="100px" align="center">Drafted Percent</th>
-    </tr>
-    @foreach (var result in draftCalcResults)
-    {
-        <tr>
-            <td>@result.Tick</td>
-            <td>@result.SoldiersDrafted</td>
-            <td>@result.MilitaryPopulation</td>
-            <td>@result.PeasantPopulation</td>
-            <td>@result.DraftedPercent%</td>
-        </tr>
-    }
-</table>
+    </div>
+    <p/>
+    <hr />
+    <p/>
+    <div class="row">
+        <div class="col-md-6">
+            <h3><u>Drafting Breakdowns</u></h3>
+            <Radzen.Blazor.RadzenAccordion Multiple="true" Expand="@((args) => Change(args, "Expanded", "expanded"))" Collapse="@((args) => Change(args, "Collapsed", "collapsed"))">
+                <Items>
+                    @foreach (var calc in draftBreakdowns)
+                    {
+                        <Radzen.Blazor.RadzenAccordionItem Text="@calc.Key">
+                        <table>
+                            <tr>
+                                <th width="50px" align="center">
+                                    Tick
+                                </th>
+                                <th width="100px" align="center">Soldiers Drafted</th>
+                                <th width="100px" align="center">Military Population</th>
+                                <th width="100px" align="center">Peasant Population</th>
+                                <th width="100px" align="center">Drafted Percent</th>
+                            </tr>
+                            @foreach (var result in calc.Value)
+                            {
+                                <tr>
+                                    <td>@result.Tick</td>
+                                    <td>@result.SoldiersDrafted</td>
+                                    <td>@result.MilitaryPopulation</td>
+                                    <td>@result.PeasantPopulation</td>
+                                    <td>@result.DraftedPercent%</td>
+                                </tr>
+                            }
+                        </table>
+                        </Radzen.Blazor.RadzenAccordionItem>
+                    }
+                </Items>
+            </Radzen.Blazor.RadzenAccordion>
+        </div>
+    </div>
+}
 
 
 
@@ -146,8 +162,74 @@ catch (Exception ex)
     private List<DraftCalcTickResult> draftCalcResults = new List<DraftCalcTickResult>(){ new DraftCalcTickResult(){Tick=0,
         DraftedPercent=0, MilitaryPopulation=0, PeasantPopulation=0,SoldiersDrafted=0} };
 
+    private List<string> Calculations = new List<string>()
+{
+        "Emergency + Patriotism",
+        "Emergency",
+        "Aggressive + Patriotism",
+        "Aggressive",
+        "Normal + Patriotism",
+        "Normal",
+        //"Reservist + Patriotism",
+        //"Reservist"
+    };
+
+    private Dictionary<string, List<DraftCalcTickResult>> draftBreakdowns = new Dictionary<string, List<DraftCalcTickResult>>();
+
     private async Task Calculate()
     {
+        foreach (var calc in Calculations)
+        {
+            switch (calc)
+            {
+                case "Emergency + Patriotism":
+                    soldiersPerTick.Patriotism = true;
+                    soldiersPerTick.DraftSpeed = ".015";
+                    draftBreakdowns.Add(calc, await _draftCalculator.CalculateDraft(soldiersPerTick));
+                    break;
+                case "Emergency":
+                    soldiersPerTick.Patriotism = false;
+                    soldiersPerTick.DraftSpeed = ".015";
+                    draftBreakdowns.Add(calc, await _draftCalculator.CalculateDraft(soldiersPerTick));
+                    break;
+                case "Aggressive + Patriotism":
+                    soldiersPerTick.Patriotism = true;
+                    soldiersPerTick.DraftSpeed = ".01";
+                    draftBreakdowns.Add(calc, await _draftCalculator.CalculateDraft(soldiersPerTick));
+                    break;
+                case "Aggressive":
+                    soldiersPerTick.Patriotism = false;
+                    soldiersPerTick.DraftSpeed = ".01";
+                    draftBreakdowns.Add(calc, await _draftCalculator.CalculateDraft(soldiersPerTick));
+                    break;
+                case "Normal + Patriotism":
+                    soldiersPerTick.Patriotism = true;
+                    soldiersPerTick.DraftSpeed = ".006";
+                    draftBreakdowns.Add(calc, await _draftCalculator.CalculateDraft(soldiersPerTick));
+                    break;
+                case "Normal":
+                    soldiersPerTick.Patriotism = false;
+                    soldiersPerTick.DraftSpeed = ".006";
+                    draftBreakdowns.Add(calc, await _draftCalculator.CalculateDraft(soldiersPerTick));
+                    break;
+                    //case "Reservist + Patriotism":
+                    //    soldiersPerTick.Patriotism = true;
+                    //    soldiersPerTick.DraftSpeed = ".003";
+                    //    draftBreakdowns.Add(calc, await _draftCalculator.CalculateDraft(soldiersPerTick));
+                    //    break;
+                    //case "Reservist":
+                    //    soldiersPerTick.Patriotism = false;
+                    //    soldiersPerTick.DraftSpeed = ".003";
+                    //    draftBreakdowns.Add(calc, await _draftCalculator.CalculateDraft(soldiersPerTick));
+                    //    break;
+            }
+        }
+
         draftCalcResults = await _draftCalculator.CalculateDraft(soldiersPerTick);
+    }
+
+    void Change(object value, string name, string action)
+    {
+        StateHasChanged();
     }
 }
