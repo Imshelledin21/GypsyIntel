@@ -1,0 +1,126 @@
+﻿@page "/dragonCalculator"
+
+@using GypsyIntel.Calculators.DataModels;
+@using GypsyIntel.Calculators;
+
+
+
+<h1>Draft Calculator</h1>
+@try
+{
+    <div class="col-lg-12">
+        <EditForm Model="@targetKingdomNetworth" OnSubmit="CalculateDragon">
+            <label>Target Kingdom Networth</label>
+            <InputNumber @bind-Value="targetKingdomNetworth.Networth"/>
+            <p>
+                <button type="submit">Calculate Draft</button>
+            </p>
+        </EditForm>
+    </div>
+
+    @if (dragonCalcs.Any())
+    {
+        <table border="1" width="75%">
+            <tr>
+                <th>Dragon Type</th>
+                <th>Relations</th>
+                <th>Dragon Cost</th>
+                <th>Dragon HP</th>
+            </tr>
+            @foreach(var calc in dragonCalcs)
+            {
+                <tr>
+                    <td background="@calc.ColorCode">@calc.DragonType</td>
+                    <td background="@calc.ColorCode">@calc.Relation</td>
+                    <td background="@calc.ColorCode">@String.Format("{0:n0}",calc.DragonCost)</td>
+                    <td background="@calc.ColorCode">@String.Format("{0:n0}",calc.DragonHp)</td>
+                </tr>
+            }
+        </table>
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+}
+
+<p />
+<hr />
+
+
+
+@code {
+
+
+    public List<DragonCalcResult> dragonCalcs = new List<DragonCalcResult>();
+
+    private TargetKingdomNetworth targetKingdomNetworth = new TargetKingdomNetworth();
+
+    private List<string> dragonTypes = new List<string>()
+    {
+        "Sapphire",
+        "Gold",
+        "Ruby",
+        "Emerald"
+    };
+
+    private Dictionary<string, double> DragonCostMod = new Dictionary<string, double>()
+    {
+        {"Sapphire", 1.5 },
+        {"Gold", 2 },
+        {"Ruby", 2.4 },
+        {"Emerald", 3 }
+    };
+
+    private Dictionary<string, double> DragonHpMod = new Dictionary<string, double>()
+    {
+        {"Sapphire", 2.72 },
+        {"Gold", 4.4625 },
+        {"Ruby", 7.65 },
+        {"Emerald", 8.925 }
+    };
+
+    private Dictionary<string, double> RelationsMod = new Dictionary<string, double>()
+    {
+        {"None", .5 },
+        {"Unfriendly", .5 },
+        {"Hostile", .75 },
+        {"War", 1 }
+    };
+
+
+    private async Task<int> CalcDragonCost(double typeCostMod, int targetKingdomNetworth)
+    {
+        var costMetric = .656 * targetKingdomNetworth;
+        var dragonCost = Convert.ToInt32(typeCostMod * costMetric);
+        return dragonCost;
+    }
+
+    private async Task<int> CalcDragonHp(double typeHpMod, double relationsMod, int targetKingdomNetworth)
+    {
+        return Convert.ToInt32(typeHpMod * relationsMod * (targetKingdomNetworth / 132));
+    }
+
+    public async Task CalculateDragon()
+    {
+        foreach (var relation in RelationsMod) {
+            foreach (var dragonType in dragonTypes)
+            {
+                var calc = new DragonCalcResult()
+                {
+                    Relation = relation.Key,
+                    DragonType = dragonType,
+                    DragonCost = CalcDragonCost(DragonCostMod[dragonType], targetKingdomNetworth.Networth).Result,
+                    DragonHp = CalcDragonHp(DragonHpMod[dragonType], relation.Value, targetKingdomNetworth.Networth).Result
+                };
+                calc.CalcColorCode();
+                dragonCalcs.Add(calc);                
+            }
+        }        
+    }
+
+    void Change(object value, string name, string action)
+    {
+        StateHasChanged();
+    }
+}

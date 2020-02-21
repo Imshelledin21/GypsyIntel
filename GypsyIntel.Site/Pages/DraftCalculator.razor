@@ -115,9 +115,9 @@ catch (Exception ex)
         </table>
 
     </div>
-    <p/>
+    <p />
     <hr />
-    <p/>
+    <p />
     <div class="row">
         <div class="col-md-6">
             <h3><u>Drafting Breakdowns</u></h3>
@@ -126,27 +126,27 @@ catch (Exception ex)
                     @foreach (var calc in draftBreakdowns)
                     {
                         <Radzen.Blazor.RadzenAccordionItem Text="@calc.Key">
-                        <table>
-                            <tr>
-                                <th width="50px" align="center">
-                                    Tick
-                                </th>
-                                <th width="100px" align="center">Soldiers Drafted</th>
-                                <th width="100px" align="center">Military Population</th>
-                                <th width="100px" align="center">Peasant Population</th>
-                                <th width="100px" align="center">Drafted Percent</th>
-                            </tr>
-                            @foreach (var result in calc.Value)
-                            {
+                            <table>
                                 <tr>
-                                    <td>@result.Tick</td>
-                                    <td>@result.SoldiersDrafted</td>
-                                    <td>@result.MilitaryPopulation</td>
-                                    <td>@result.PeasantPopulation</td>
-                                    <td>@result.DraftedPercent%</td>
+                                    <th width="50px" align="center">
+                                        Tick
+                                    </th>
+                                    <th width="100px" align="center">Soldiers Drafted</th>
+                                    <th width="100px" align="center">Military Population</th>
+                                    <th width="100px" align="center">Peasant Population</th>
+                                    <th width="100px" align="center">Drafted Percent</th>
                                 </tr>
-                            }
-                        </table>
+                                @foreach (var result in calc.Value)
+                                {
+                                    <tr>
+                                        <td>@result.Tick</td>
+                                        <td>@result.SoldiersDrafted</td>
+                                        <td>@result.MilitaryPopulation</td>
+                                        <td>@result.PeasantPopulation</td>
+                                        <td>@result.DraftedPercent%</td>
+                                    </tr>
+                                }
+                            </table>
                         </Radzen.Blazor.RadzenAccordionItem>
                     }
                 </Items>
@@ -159,19 +159,15 @@ catch (Exception ex)
 
 @code {
     private SoldiersPerTick soldiersPerTick = new SoldiersPerTick();
-    private List<DraftCalcTickResult> draftCalcResults = new List<DraftCalcTickResult>(){ new DraftCalcTickResult(){Tick=0,
-        DraftedPercent=0, MilitaryPopulation=0, PeasantPopulation=0,SoldiersDrafted=0} };
 
     private List<string> Calculations = new List<string>()
-{
+    {
         "Emergency + Patriotism",
         "Emergency",
         "Aggressive + Patriotism",
         "Aggressive",
         "Normal + Patriotism",
-        "Normal",
-        //"Reservist + Patriotism",
-        //"Reservist"
+        "Normal"
     };
 
     private Dictionary<string, List<DraftCalcTickResult>> draftBreakdowns = new Dictionary<string, List<DraftCalcTickResult>>();
@@ -213,20 +209,8 @@ catch (Exception ex)
                     soldiersPerTick.DraftSpeed = ".006";
                     draftBreakdowns.Add(calc, await _draftCalculator.CalculateDraft(soldiersPerTick));
                     break;
-                    //case "Reservist + Patriotism":
-                    //    soldiersPerTick.Patriotism = true;
-                    //    soldiersPerTick.DraftSpeed = ".003";
-                    //    draftBreakdowns.Add(calc, await _draftCalculator.CalculateDraft(soldiersPerTick));
-                    //    break;
-                    //case "Reservist":
-                    //    soldiersPerTick.Patriotism = false;
-                    //    soldiersPerTick.DraftSpeed = ".003";
-                    //    draftBreakdowns.Add(calc, await _draftCalculator.CalculateDraft(soldiersPerTick));
-                    //    break;
             }
         }
-
-        draftCalcResults = await _draftCalculator.CalculateDraft(soldiersPerTick);
     }
 
     void Change(object value, string name, string action)
