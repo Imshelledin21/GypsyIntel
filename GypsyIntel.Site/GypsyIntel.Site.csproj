@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GypsyIntel.Calculators\GypsyIntel.Calculators.csproj" />
+    <ProjectReference Include="..\GypsyIntel.Producer\GypsyIntel.Producer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
