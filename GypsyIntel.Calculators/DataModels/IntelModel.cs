@@ -11,5 +11,7 @@ namespace GypsyIntel.Calculators.DataModels
         public string Url { get; set; }
         public string Province { get; set; }
         public string HtmlData { get; set; }
+        public DateTime IntelTimestamp { get; set; }
+        public string SimpleData { get; set; }
     }
 }
