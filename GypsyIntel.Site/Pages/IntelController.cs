@@ -10,28 +10,28 @@ namespace GypsyIntel.Site.Pages
     [ApiController]
     public class IntelController : ControllerBase
     {
-        private const string Key = "693442B6-D241-480C-8E5B-EF5FC8249817";
-        [HttpPost]
-        public async Task Post([FromBody] string data_html, [FromBody] string data_simple, [FromBody] string url, [FromBody] string prov, [FromBody] string key)
-        {
-            if (key != Key) throw new UnauthorizedAccessException();
-            else
-            {
-                try
-                {
-                    string page = GetIntelPageName(url);
-                    Producer.Producer producer = new Producer.Producer();
+        //private const string Key = "693442B6-D241-480C-8E5B-EF5FC8249817";
+        //[HttpPost]
+        //public async Task Post([FromBody] string data_html, [FromBody] string data_simple, [FromBody] string url, [FromBody] string prov, [FromBody] string key)
+        //{
+        //    if (key != Key) throw new UnauthorizedAccessException();
+        //    else
+        //    {
+        //        try
+        //        {
+        //            string page = GetIntelPageName(url);
+        //            Producer.Producer producer = new Producer.Producer();
 
-                    await LogActivity(url, prov, producer, page);
-                    await LogPageIntel(data_html, data_simple, url, prov, producer, page);
+        //            await LogActivity(url, prov, producer, page);
+        //            await LogPageIntel(data_html, data_simple, url, prov, producer, page);
 
-                }
-                catch (Exception ex)
-                {
-                    throw;
-                }
-            }
-        }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw;
+        //        }
+        //    }
+        //}
 
         private static async Task LogPageIntel(string data_html, string data_simple, string url, string prov, Producer.Producer producer, string page)
         {
